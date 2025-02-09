@@ -8,3 +8,4 @@ export { Yurt } from "./Yurt";
 export { HouseBuilding } from "./HouseBuilding";
 export { Magnifier } from "./Magnifier";
 export { HandCoin } from "./HandCoin";
+export { MapPin } from "./MapPin";
