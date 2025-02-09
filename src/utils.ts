@@ -9,3 +9,8 @@ export const fetcher = async <T>(
 
   return response.json() as Promise<T>;
 };
+
+export enum SearchTypes {
+  rent = "rent",
+  buy = "buy",
+}
