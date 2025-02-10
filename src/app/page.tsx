@@ -35,9 +35,13 @@ export default function Home() {
     [category, location, searchType]
   );
 
-  const { data: histogram, isLoading: histogramIsLoading } = useSWR(
+  const {
+    data: histogram,
+    isLoading: histogramIsLoading,
+    error: histogramError,
+  } = useSWR(
     `/api/tenement/histogram?${queryString}`,
-    fetcher<HistogramData>
+    fetcher<HistogramChartData>
   );
 
   const handleSearchClick = async () => {
@@ -91,9 +95,11 @@ export default function Home() {
             <CategorySelector onSelect={setCategory} />
             <div className="w-px h-10 bg-gray-200" />
             <PriceRange
+              key={JSON.stringify(histogram?.range)}
               onChange={setPriceRange}
               data={histogram}
               isLoading={histogramIsLoading}
+              hasError={!!histogramError}
             />
             {/** Search Button */}
             <button

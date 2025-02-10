@@ -34,3 +34,8 @@ type HistogramData = {
   range: [number, number];
   histogram: Array<number>;
 };
+
+type HistogramChartData = {
+  range: [number, number];
+  histogram: Array<{ count: number; price: number }>;
+};

@@ -10,16 +10,28 @@ export async function GET(request: Request) {
   try {
     const body = preparaPayload(request);
 
-    console.log(">>>>> histogram", body);
     const response = await fetcher(
       `${process.env.BASE_API_URL}/tenement/search/histogram`,
       {
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body,
       }
     );
 
-    return Response.json(response);
+    const { range, histogram: rawHistogram } = response as HistogramData;
+
+    const max = range[1];
+    const min = range[0];
+    const stepPrice = (max - min) / rawHistogram.length;
+    const histogram = rawHistogram.map((count, index) => ({
+      count,
+      price: min + index * stepPrice,
+    }));
+
+    return Response.json({ range, histogram });
   } catch (error) {
     console.error("Error fetching categories:", error);
     throw error;
