@@ -24,3 +24,13 @@ type District = {
   id: string;
   postal_code: string;
 };
+
+type PriceRange = {
+  min?: number;
+  max?: number;
+};
+
+type HistogramData = {
+  range: [number, number];
+  histogram: Array<number>;
+};

@@ -10,6 +10,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import qs from "query-string";
 import { Stats } from "@/components/Stats";
+import { PriceRange } from "@/components/PriceRange";
 
 export default function Home() {
   const [category, setCategory] = useState<number | string>();
@@ -74,6 +75,11 @@ export default function Home() {
             <div className="w-px h-10 bg-gray-200" />
             <CategorySelector onSelect={setCategory} />
             <div className="w-px h-10 bg-gray-200" />
+            <PriceRange
+              onChange={setPriceRange}
+              data={histogram}
+              isLoading={histogramIsLoading}
+            />
             {/** Search Button */}
             <button className="flex items-center gap-2 min-w-[200px] px-4 py-2 hover:bg-gray-50 rounded-full">
               <HandCoin />
