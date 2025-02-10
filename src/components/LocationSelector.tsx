@@ -19,7 +19,7 @@ function parseDistrictName(name: string) {
 }
 
 type LocationSelectorProps = {
-  onSelect: (location: City & { district?: District }) => void;
+  onSelect: (location: string) => void;
 };
 export const LocationSelector = ({ onSelect }: LocationSelectorProps) => {
   const [selectedLocation, setSelectedLocation] = useState<City | null>(null);
@@ -38,7 +38,7 @@ export const LocationSelector = ({ onSelect }: LocationSelectorProps) => {
   const handleDistrictSelect = (district?: District) => {
     if (!selectedLocation) return;
     setIsOpen(false);
-    onSelect?.({ ...selectedLocation, district });
+    onSelect?.(district?.id || selectedLocation.id);
   };
 
   return (

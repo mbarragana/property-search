@@ -6,7 +6,7 @@ import * as Icons from "./Icons";
 import { useState } from "react";
 
 type CategorySelectorProps = {
-  onSelect: (category: Category) => void;
+  onSelect: (category: number | string) => void;
 };
 
 const ALL_OPTION: Category = {
@@ -29,11 +29,10 @@ const LoadingSkeleton = () => (
 );
 
 export function CategorySelector({ onSelect }: CategorySelectorProps) {
-  const {
-    data = [],
-    error,
-    isLoading,
-  } = useSWR("/api/categories", fetcher<Category[]>);
+  const { data = [], isLoading } = useSWR(
+    "/api/categories",
+    fetcher<Category[]>
+  );
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
@@ -43,7 +42,7 @@ export function CategorySelector({ onSelect }: CategorySelectorProps) {
   const handleCategorySelect = (category: Category) => {
     setSelectedCategory(category);
     setIsOpen(false);
-    onSelect?.(category);
+    onSelect?.(category.id);
   };
 
   return (
