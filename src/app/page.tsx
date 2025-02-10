@@ -2,39 +2,54 @@
 
 import { CategorySelector } from "@/components/CategoriesSelector";
 import { Header } from "@/components/Header";
-import { HandCoin } from "@/components/Icons";
 import { LocationSelector } from "@/components/LocationSelector";
 import { ToggleGroup } from "@/components/Toggle";
 import { fetcher, SearchTypes } from "@/utils";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-import qs from "query-string";
+import { useEffect, useMemo, useState } from "react";
+import qs from "qs";
 import { Stats } from "@/components/Stats";
 import { PriceRange } from "@/components/PriceRange";
+import useSWR from "swr";
 
 export default function Home() {
   const [category, setCategory] = useState<number | string>();
   const [location, setLocation] = useState<string>();
   const [searchType, setSearchType] = useState<SearchTypes>(SearchTypes.rent);
+  const [priceRange, setPriceRange] = useState<PriceRange>({
+    min: undefined,
+    max: undefined,
+  });
   const [countState, setCountState] = useState<{
     data?: number;
     isLoading: boolean;
   }>({ data: undefined, isLoading: true });
 
-  const searchIsDisabled = !location;
-  const searchClasses = searchIsDisabled
-    ? " bg-purple-400 cursor-not-allowed opacity-50"
-    : "bg-purple-600 hover:bg-purple-700 active:scale-95";
+  const queryString = useMemo(
+    () =>
+      qs.stringify({
+        category,
+        location,
+        searchType,
+      }),
+    [category, location, searchType]
+  );
+
+  const { data: histogram, isLoading: histogramIsLoading } = useSWR(
+    `/api/tenement/histogram?${queryString}`,
+    fetcher<HistogramData>
+  );
 
   const handleSearchClick = async () => {
     setCountState((value) => ({ ...value, isLoading: true }));
-    const queryString = qs.stringify({
+    const queryParams = qs.stringify({
       category,
       location,
       searchType,
+      priceRange,
     });
     const data = await fetcher<{ count: number }>(
-      `/api/tenement/count?${queryString}`
+      `/api/tenement/count?${queryParams}`
     );
     setCountState({ data: data.count, isLoading: false });
   };
@@ -81,17 +96,9 @@ export default function Home() {
               isLoading={histogramIsLoading}
             />
             {/** Search Button */}
-            <button className="flex items-center gap-2 min-w-[200px] px-4 py-2 hover:bg-gray-50 rounded-full">
-              <HandCoin />
-              <div className="text-left">
-                <div className="text-sm font-medium text-gray-900">Price</div>
-                <div className="text-sm text-gray-500">Select Price Range</div>
-              </div>
-            </button>
             <button
               onClick={handleSearchClick}
-              disabled={searchIsDisabled}
-              className={`ml-auto bg-purple-600 text-white px-8 py-5 rounded-full font-medium hover:bg-purple-700 transition-colors ${searchClasses}`}
+              className="ml-auto bg-purple-600 text-white px-8 py-5 rounded-full font-medium hover:bg-purple-700 transition-colors bg-purple-600 hover:bg-purple-700 active:scale-95"
             >
               Search
             </button>

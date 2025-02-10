@@ -21,9 +21,18 @@ function parseDistrictName(name: string) {
 type LocationSelectorProps = {
   onSelect: (location: string) => void;
 };
+
+function getButtonLabel(place: City | District | null) {
+  if (place) {
+    return place.name;
+  }
+  return "Search address, neighbourhood, city, or ZIP code";
+}
+
 export const LocationSelector = ({ onSelect }: LocationSelectorProps) => {
   const [selectedLocation, setSelectedLocation] = useState<City | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [place, setPlace] = useState<City | District | null>(null);
 
   const recentSearchesState = useSWR(
     "/api/search/recent",
@@ -37,6 +46,7 @@ export const LocationSelector = ({ onSelect }: LocationSelectorProps) => {
 
   const handleDistrictSelect = (district?: District) => {
     if (!selectedLocation) return;
+    setPlace(district || selectedLocation);
     setIsOpen(false);
     onSelect?.(district?.id || selectedLocation.id);
   };
@@ -50,9 +60,7 @@ export const LocationSelector = ({ onSelect }: LocationSelectorProps) => {
         <Magnifier />
         <div className="flex flex-col items-start">
           <span className="text-sm font-medium text-gray-900">Location</span>
-          <span className="text-sm text-gray-500">
-            Search address, neighbourhood, city, or ZIP code
-          </span>
+          <span className="text-sm text-gray-500">{getButtonLabel(place)}</span>
         </div>
       </button>
 
