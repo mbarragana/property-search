@@ -115,7 +115,7 @@ export const PriceRange = ({
       {/* Button Trigger */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors w-full ${
+        className={`flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors w-full ${
           dataIsInvalid ? "opacity-60" : ""
         }`}
         disabled={dataIsInvalid}

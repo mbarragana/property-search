@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Magnifier, MapPin } from "./Icons";
+import { Magnifier, MapPin } from "../components/Icons";
 import { fetcher } from "@/utils";
 import useSWR from "swr";
 import Image from "next/image";
@@ -55,7 +55,7 @@ export const LocationSelector = ({ onSelect }: LocationSelectorProps) => {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50 transition-colors w-full"
+        className="flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors w-full"
       >
         <Magnifier />
         <div className="flex flex-col items-start">

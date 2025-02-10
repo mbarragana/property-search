@@ -2,6 +2,9 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 
+const linkClass =
+  "text-base text-gray-900 hover:text-gray-600 transition-colors font-semibold";
+
 export const Header = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white backdrop-blur-sm">
@@ -21,28 +24,16 @@ export const Header = () => {
 
           {/* Navigation Links */}
           <div className="flex items-center gap-6">
-            <Link
-              href="/rent-buy"
-              className="text-base text-gray-900 hover:text-gray-600 transition-colors font-semibold"
-            >
+            <Link href="/rent-buy" className={linkClass}>
               Rent/Buy
             </Link>
-            <Link
-              href="/for-owners"
-              className="text-base text-gray-900 hover:text-gray-600 transition-colors font-semibold"
-            >
+            <Link href="/for-owners" className={linkClass}>
               For Owners
             </Link>
-            <Link
-              href="/for-brokers"
-              className="text-base text-gray-900 hover:text-gray-600 transition-colors font-semibold"
-            >
+            <Link href="/for-brokers" className={linkClass}>
               For Brokers
             </Link>
-            <Link
-              href="/about-us"
-              className="text-base text-gray-900 hover:text-gray-600 transition-colors font-semibold"
-            >
+            <Link href="/about-us" className={linkClass}>
               About Us
             </Link>
           </div>

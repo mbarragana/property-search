@@ -1,8 +1,8 @@
 "use client";
 
-import { CategorySelector } from "@/components/CategoriesSelector";
+import { CategorySelector } from "@/containers/CategoriesSelector";
 import { Header } from "@/components/Header";
-import { LocationSelector } from "@/components/LocationSelector";
+import { LocationSelector } from "@/containers/LocationSelector";
 import { ToggleGroup } from "@/components/Toggle";
 import { fetcher, SearchTypes } from "@/utils";
 import Image from "next/image";
@@ -82,7 +82,7 @@ export default function Home() {
       {/* Content */}
       <div className="relative h-full flex flex-col items-center justify-center">
         {/* Search Container */}
-        <div className="w-full max-w-4xl">
+        <div className="w-full max-w-6xl">
           {/* Heading */}
           <h1 className="text-5xl font-serif text-white mb-16">
             Rent faster, Buy smarter
