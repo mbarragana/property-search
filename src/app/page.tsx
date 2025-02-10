@@ -65,7 +65,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="relative h-screen min-h-[600px] w-full">
+    <div className="relative min-h-screen w-full">
       <Header />
       {/* Background Image */}
       <div className="absolute inset-0 bg-gradient-to-r from-gray-900/50 to-gray-900/30">
@@ -80,34 +80,42 @@ export default function Home() {
       </div>
 
       {/* Content */}
-      <div className="relative h-full flex flex-col items-center justify-center">
-        {/* Search Container */}
+      <div className="relative min-h-screen px-4 flex flex-col items-center justify-center">
         <div className="w-full max-w-6xl">
           {/* Heading */}
-          <h1 className="text-5xl font-serif text-white mb-16">
+          <h1 className="text-3xl md:text-5xl font-serif text-white mb-8 md:mb-14">
             Rent faster, Buy smarter
           </h1>
+
           <ToggleGroup onChange={setSearchType} value={searchType} />
-          {/* Search Bar */}
-          <div className="bg-white rounded-full py-2 px-4 shadow-lg flex items-center gap-2 mt-6 w-full">
-            <LocationSelector onSelect={setLocation} />
-            <div className="w-px h-10 bg-gray-200" />
-            <CategorySelector onSelect={setCategory} category={category} />
-            <div className="w-px h-10 bg-gray-200" />
-            <PriceRange
-              onChange={setPriceRange}
-              data={histogram}
-              isLoading={histogramIsLoading}
-              hasError={!!histogramError}
-            />
-            {/** Search Button */}
-            <button
-              onClick={handleSearchClick}
-              className="ml-auto bg-purple-600 text-white px-8 py-5 rounded-full font-medium hover:bg-purple-700 transition-colors bg-purple-600 hover:bg-purple-700"
-            >
-              Search
-            </button>
+
+          {/* Search Section */}
+          <div className="flex flex-col gap-4 mt-6">
+            {/* Search Bar - Mobile: Stack vertically, Desktop: Single row */}
+            <div className="flex flex-col md:flex-row bg-white rounded-2xl md:rounded-full py-2 px-4 shadow-lg gap-2">
+              <LocationSelector onSelect={setLocation} />
+
+              <div className="hidden md:block w-px h-10 bg-gray-200" />
+              <CategorySelector onSelect={setCategory} category={category} />
+
+              <div className="hidden md:block w-px h-10 bg-gray-200" />
+              <PriceRange
+                onChange={setPriceRange}
+                data={histogram}
+                isLoading={histogramIsLoading}
+                hasError={!!histogramError}
+              />
+
+              {/* Search Button */}
+              <button
+                onClick={handleSearchClick}
+                className="w-full md:w-auto bg-purple-600 text-white px-8 py-4 rounded-full font-medium hover:bg-purple-700 transition-colors"
+              >
+                Search
+              </button>
+            </div>
           </div>
+
           <Stats count={countState.data} isLoading={countState.isLoading} />
         </div>
       </div>

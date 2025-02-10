@@ -14,10 +14,10 @@ type ToggleGroupProps = {
 
 export const ToggleGroup = ({ value, onChange }: ToggleGroupProps) => {
   return (
-    <div className="inline-flex items-center bg-white rounded-full shadow-sm">
+    <div className="flex md:inline-flex items-center bg-white rounded-full shadow-sm w-full md:w-auto">
       <button
         onClick={() => onChange(SearchTypes.rent)}
-        className={`w-[142px] py-5 rounded-full text-m transition-colors ${selectedClass(
+        className={`flex-1 md:flex-none md:w-[142px] py-4 md:py-4 rounded-full text-sm md:text-base transition-colors ${selectedClass(
           value === SearchTypes.rent
         )}`}
       >
@@ -26,7 +26,7 @@ export const ToggleGroup = ({ value, onChange }: ToggleGroupProps) => {
 
       <button
         onClick={() => onChange(SearchTypes.buy)}
-        className={`w-[142px] py-5 rounded-full text-m transition-colors ${selectedClass(
+        className={`flex-1 md:flex-none md:w-[142px] py-4 md:py-4 rounded-full text-sm md:text-base transition-colors ${selectedClass(
           value === SearchTypes.buy
         )}`}
       >
@@ -35,7 +35,7 @@ export const ToggleGroup = ({ value, onChange }: ToggleGroupProps) => {
 
       <button
         disabled
-        className="w-[142px] py-4 rounded-full text-m text-gray-400 cursor-not-allowed"
+        className="hidden md:block w-[142px] py-4 rounded-full text-sm md:text-base text-gray-400 cursor-not-allowed"
       >
         Lystio A.I
       </button>
