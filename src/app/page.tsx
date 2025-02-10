@@ -95,7 +95,6 @@ export default function Home() {
             <CategorySelector onSelect={setCategory} />
             <div className="w-px h-10 bg-gray-200" />
             <PriceRange
-              key={JSON.stringify(histogram?.range)}
               onChange={setPriceRange}
               data={histogram}
               isLoading={histogramIsLoading}
