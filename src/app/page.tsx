@@ -13,7 +13,7 @@ import { PriceRange } from "@/components/PriceRange";
 import useSWR from "swr";
 
 export default function Home() {
-  const [category, setCategory] = useState<number | string>();
+  const [category, setCategory] = useState<Category | undefined>();
   const [location, setLocation] = useState<string>();
   const [searchType, setSearchType] = useState<SearchTypes>(SearchTypes.rent);
   const [priceRange, setPriceRange] = useState<PriceRange>({
@@ -28,7 +28,7 @@ export default function Home() {
   const queryString = useMemo(
     () =>
       qs.stringify({
-        category,
+        category: category?.id,
         location,
         searchType,
       }),
@@ -47,7 +47,7 @@ export default function Home() {
   const handleSearchClick = async () => {
     setCountState((value) => ({ ...value, isLoading: true }));
     const queryParams = qs.stringify({
-      category,
+      category: category?.id,
       location,
       searchType,
       priceRange,
@@ -92,7 +92,7 @@ export default function Home() {
           <div className="bg-white rounded-full py-2 px-4 shadow-lg flex items-center gap-2 mt-6 w-full">
             <LocationSelector onSelect={setLocation} />
             <div className="w-px h-10 bg-gray-200" />
-            <CategorySelector onSelect={setCategory} />
+            <CategorySelector onSelect={setCategory} category={category} />
             <div className="w-px h-10 bg-gray-200" />
             <PriceRange
               onChange={setPriceRange}
@@ -103,7 +103,7 @@ export default function Home() {
             {/** Search Button */}
             <button
               onClick={handleSearchClick}
-              className="ml-auto bg-purple-600 text-white px-8 py-5 rounded-full font-medium hover:bg-purple-700 transition-colors bg-purple-600 hover:bg-purple-700 active:scale-95"
+              className="ml-auto bg-purple-600 text-white px-8 py-5 rounded-full font-medium hover:bg-purple-700 transition-colors bg-purple-600 hover:bg-purple-700"
             >
               Search
             </button>

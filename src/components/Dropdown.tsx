@@ -5,10 +5,10 @@ import { ComponentType, useEffect, useRef } from "react";
 type BaseSelectorProps<T> = {
   label: {
     Icon: ComponentType;
-    formatLabel: (value: T | null) => string;
+    formatLabel: (value: T) => string;
     name: string;
   };
-  value: T | null;
+  value: T;
   children: React.ReactNode;
   classes?: {
     button?: string;

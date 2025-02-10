@@ -4,10 +4,13 @@ import useSWR from "swr";
 import { fetcher } from "@/utils";
 import * as Icons from "../components/Icons";
 import { useState } from "react";
-import { Dropdown } from "@/components/Dropdown";
+import { Dropdown as TDropdown } from "@/components/Dropdown";
+
+const Dropdown = TDropdown<Category | undefined>;
 
 type CategorySelectorProps = {
-  onSelect: (category: number | string) => void;
+  onSelect: (category: Category | undefined) => void;
+  category?: Category;
 };
 
 const ALL_OPTION: Category = {
@@ -18,7 +21,7 @@ const ALL_OPTION: Category = {
 const labelProps = {
   Icon: Icons.HouseBuilding,
   name: "Category",
-  formatLabel: (value: Category | null) =>
+  formatLabel: (value: Category | undefined) =>
     value ? value.name : "Select Category",
 };
 
@@ -27,47 +30,45 @@ const classes = {
   overlay: "w-full",
 };
 
-export function CategorySelector({ onSelect }: CategorySelectorProps) {
+export function CategorySelector({
+  onSelect,
+  category,
+}: CategorySelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
   const { data = [] } = useSWR("/api/categories", fetcher<Category[]>);
 
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
-    null
-  );
-
   const handleCategorySelect = (category: Category) => {
-    setSelectedCategory(category);
-    onSelect?.(category.id === "all" ? "" : category.id);
+    onSelect?.(category.id === "all" ? undefined : category);
     setIsOpen(false);
   };
 
   return (
     <Dropdown
-      value={selectedCategory}
+      value={category}
       label={labelProps}
       classes={classes}
       isOpen={isOpen}
       onOpenClose={setIsOpen}
     >
       <div className="py-2">
-        {[ALL_OPTION].concat(data).map((category) => {
-          const Icon = Icons[category.icon as keyof typeof Icons];
+        {[ALL_OPTION].concat(data).map((categoryItem) => {
+          const Icon = Icons[categoryItem.icon as keyof typeof Icons];
           return (
             <button
-              key={category.id}
-              onClick={() => handleCategorySelect(category)}
+              key={categoryItem.id}
+              onClick={() => handleCategorySelect(categoryItem)}
               className="w-full flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
             >
               {/* <Icon className="w-5 h-5 text-purple-500" /> */}
               {Icon ? <Icon /> : null}
               <span
                 className={
-                  category.id === "all"
+                  categoryItem.id === "all"
                     ? "text-base font-semibold text-gray-900"
                     : ""
                 }
               >
-                {category.name}
+                {categoryItem.name}
               </span>
             </button>
           );
