@@ -24,6 +24,7 @@ const labelProps = {
 
 const classes = {
   container: "min-w-64",
+  overlay: "w-full",
 };
 
 export function CategorySelector({ onSelect }: CategorySelectorProps) {

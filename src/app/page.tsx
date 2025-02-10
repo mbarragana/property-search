@@ -89,7 +89,7 @@ export default function Home() {
           </h1>
           <ToggleGroup onChange={setSearchType} value={searchType} />
           {/* Search Bar */}
-          <div className="bg-white rounded-full py-2 px-4 shadow-lg flex items-center gap-2 mt-6">
+          <div className="bg-white rounded-full py-2 px-4 shadow-lg flex items-center gap-2 mt-6 w-full">
             <LocationSelector onSelect={setLocation} />
             <div className="w-px h-10 bg-gray-200" />
             <CategorySelector onSelect={setCategory} />
