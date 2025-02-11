@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+  useRef,
+} from "react";
 import { BarChart, Bar, Cell } from "recharts";
 import { HandCoin } from "./Icons";
 import { Dropdown } from "./Dropdown";
@@ -15,7 +21,7 @@ function parseDataRange(data?: HistogramChartData) {
 }
 
 const classes = {
-  container: "min-w-64",
+  container: "md:min-w-64",
   overlay: "right-0",
 };
 
@@ -28,23 +34,22 @@ export const PriceRange = ({
   const [isOpen, setIsOpen] = useState(false);
   const [range, setRange] = useState(parseDataRange(data));
   const [isDragging, setIsDragging] = useState<string | null>(null);
+  const slider = useRef<HTMLDivElement>(null);
 
   const maxPrice = useMemo(() => data?.range[1], [data]);
   const dataIsInvalid = maxPrice === null || hasError;
+  const rect = slider.current?.getBoundingClientRect();
 
   useEffect(() => {
     setRange(parseDataRange(data));
   }, [data]);
 
-  // Handle mouse movement for sliding
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      const slider = document.getElementById("price-slider");
-      if (!isDragging || !slider || !maxPrice) return;
+  const updateSliderValue = useCallback(
+    (clientX: number) => {
+      if (!isDragging || !rect || !maxPrice) return;
 
-      const rect = slider.getBoundingClientRect();
       // mouse position x
-      const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+      const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
       const percentage = x / rect.width;
       const value = Math.round(percentage * maxPrice);
 
@@ -62,23 +67,56 @@ export const PriceRange = ({
 
         return newRange;
       });
+    },
+    [rect, isDragging, maxPrice]
+  );
+
+  useEffect(() => {
+    const handleMove = (e: MouseEvent) => {
+      updateSliderValue(e.clientX);
     };
 
-    const handleMouseUp = () => {
+    const handleEnd = () => {
       setIsDragging(null);
       onChange?.(range);
     };
 
     if (isDragging) {
-      document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseup", handleMouseUp);
+      document.addEventListener("mousemove", handleMove);
+      document.addEventListener("mouseup", handleEnd);
     }
 
     return () => {
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
+      document.removeEventListener("mousemove", handleMove);
+      document.removeEventListener("mouseup", handleEnd);
     };
-  }, [isDragging, onChange, range, maxPrice]);
+  }, [isDragging, onChange, range, updateSliderValue]);
+
+  useEffect(() => {
+    const handleTouchMove = (e: TouchEvent) => {
+      console.log(">>>>");
+      e.preventDefault(); // Prevent scrolling while dragging
+      const touch = e.touches[0];
+      updateSliderValue(touch.clientX);
+    };
+
+    const handleTouchEnd = () => {
+      setIsDragging(null);
+      onChange?.(range);
+    };
+
+    if (isDragging) {
+      document.addEventListener("touchmove", handleTouchMove, {
+        passive: false,
+      });
+      document.addEventListener("touchend", handleTouchEnd);
+    }
+
+    return () => {
+      document.removeEventListener("touchmove", handleTouchMove);
+      document.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [isDragging, onChange, range, updateSliderValue]);
 
   // Get button label based on selected range
   const formatLabel = useCallback(() => {
@@ -122,15 +160,15 @@ export const PriceRange = ({
       classes={classes}
     >
       {data && maxPrice ? (
-        <div className="p-6 w-[560px]">
+        <div className="p-6 w-full md:w-[560px]">
           <h2 className="text-xl font-semibold text-gray-900 mb-6">
             Price Range
           </h2>
 
           {/* Histogram with Range Slider */}
-          <div className="relative mb-8" id="price-slider">
+          <div className="relative mb-8" id="price-slider" ref={slider}>
             <BarChart
-              width={500}
+              width={window.innerWidth > 500 ? 500 : window.innerWidth - 120}
               height={100}
               margin={{ top: 5, right: 0, left: 0, bottom: 5 }}
               data={data.histogram}
@@ -162,11 +200,19 @@ export const PriceRange = ({
                   e.preventDefault();
                   setIsDragging("min");
                 }}
+                onTouchStart={(e) => {
+                  e.preventDefault();
+                  setIsDragging("min");
+                }}
               />
               <button
                 className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-6 h-6 bg-white rounded-full shadow-md border-2 border-purple-600 cursor-grab active:cursor-grabbing hover:scale-110 transition-transform"
                 style={{ left: `${(range.max / maxPrice) * 100}%` }}
                 onMouseDown={(e) => {
+                  e.preventDefault();
+                  setIsDragging("max");
+                }}
+                onTouchStart={(e) => {
                   e.preventDefault();
                   setIsDragging("max");
                 }}

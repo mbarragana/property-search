@@ -54,7 +54,7 @@ export function Dropdown<T>({
         disabled={disabled}
       >
         <label.Icon />
-        <div className="flex flex-col items-start">
+        <div className="flex flex-col items-start text-left">
           <span className="text-sm font-medium text-gray-900">
             {label.name}
           </span>
