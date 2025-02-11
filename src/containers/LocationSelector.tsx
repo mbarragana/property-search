@@ -36,7 +36,7 @@ const labelProps = {
 
 const classes = {
   container: "min-w-64 w-full",
-  overlay: "flex",
+  overlay: "flex flex-col md:flex-row",
 };
 
 export const LocationSelector = ({ onSelect }: LocationSelectorProps) => {
@@ -51,6 +51,10 @@ export const LocationSelector = ({ onSelect }: LocationSelectorProps) => {
   const popularCitiesState = useSWR("/api/boundary/popular", fetcher<City[]>);
 
   const handleLocationSelect = (location: City) => {
+    if (location.id === selectedLocation?.id) {
+      setSelectedLocation(null);
+      return;
+    }
     setSelectedLocation(location);
   };
 

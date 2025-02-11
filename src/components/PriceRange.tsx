@@ -94,8 +94,7 @@ export const PriceRange = ({
 
   useEffect(() => {
     const handleTouchMove = (e: TouchEvent) => {
-      console.log(">>>>");
-      e.preventDefault(); // Prevent scrolling while dragging
+      e.preventDefault();
       const touch = e.touches[0];
       updateSliderValue(touch.clientX);
     };
