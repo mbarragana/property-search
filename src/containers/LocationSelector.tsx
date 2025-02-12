@@ -149,7 +149,7 @@ export const LocationSelector = ({ onSelect }: LocationSelectorProps) => {
             <h3 className="text-sm text-gray-500 mb-4">
               Districts in {selectedLocation.name}`
             </h3>
-            <div className="space-y-2 max-h-[350px] overflow-y-auto custom-scrollbar">
+            <div className="space-y-2 max-h-[320px] overflow-y-auto custom-scrollbar">
               <button
                 key="all"
                 onClick={() => handleDistrictSelect()}
