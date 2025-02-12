@@ -14,5 +14,11 @@ export default {
       },
     },
   },
+  safelist: [
+    // List of classnames that should always be included
+    "max-h-[320px]",
+    "overflow-y-auto",
+    // Add other dynamic classnames here
+  ],
   plugins: [],
 } satisfies Config;
