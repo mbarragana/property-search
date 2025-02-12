@@ -75,16 +75,8 @@ export const LocationSelector = ({ onSelect }: LocationSelectorProps) => {
       <>
         {/* Left Panel */}
         <div className="w-72 border-r border-gray-100">
-          {/* Current Location */}
-          <div className="px-4 py-2">
-            <button className="flex items-center gap-2 text-purple-600 w-full">
-              <ItemMapPin />
-              <span className="text-sm font-medium">Current Location</span>
-            </button>
-          </div>
-
           {/* Popular Locations */}
-          <div className="px-4 pb-4">
+          <div className="px-4 py-4">
             <h3 className="text-sm text-gray-500 mb-2">Popular Locations</h3>
             <div className="space-y-2">
               {popularCitiesState.data?.map((location) => (
@@ -147,9 +139,9 @@ export const LocationSelector = ({ onSelect }: LocationSelectorProps) => {
         {selectedLocation?.id && (
           <div className="w-72 p-4">
             <h3 className="text-sm text-gray-500 mb-4">
-              Districts in {selectedLocation.name}`
+              Districts in {selectedLocation.name}
             </h3>
-            <div className="space-y-2 max-h-[320px] overflow-y-auto custom-scrollbar">
+            <div className="space-y-2 max-h-[240px] overflow-y-auto custom-scrollbar">
               <button
                 key="all"
                 onClick={() => handleDistrictSelect()}

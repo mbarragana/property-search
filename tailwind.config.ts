@@ -16,7 +16,7 @@ export default {
   },
   safelist: [
     // List of classnames that should always be included
-    "max-h-[320px]",
+    "max-h-[240px]",
     "overflow-y-auto",
     "pb-4",
     // Add other dynamic classnames here
