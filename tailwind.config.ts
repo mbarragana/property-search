@@ -18,6 +18,7 @@ export default {
     // List of classnames that should always be included
     "max-h-[320px]",
     "overflow-y-auto",
+    "pb-4",
     // Add other dynamic classnames here
   ],
   plugins: [],

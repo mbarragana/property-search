@@ -76,7 +76,7 @@ export const LocationSelector = ({ onSelect }: LocationSelectorProps) => {
         {/* Left Panel */}
         <div className="w-72 border-r border-gray-100">
           {/* Current Location */}
-          <div className="p-4">
+          <div className="px-4 py-2">
             <button className="flex items-center gap-2 text-purple-600 w-full">
               <ItemMapPin />
               <span className="text-sm font-medium">Current Location</span>
