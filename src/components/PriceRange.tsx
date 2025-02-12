@@ -21,7 +21,6 @@ function parseDataRange(data?: HistogramChartData) {
 }
 
 const classes = {
-  container: "md:min-w-64",
   overlay: "right-0",
 };
 

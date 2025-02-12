@@ -47,7 +47,7 @@ export function Dropdown<T>({
   }, [onOpenClose]);
 
   return (
-    <div className={`relative ${container}`.trim()} ref={containerRef}>
+    <div className={`relative w-full ${container}`.trim()} ref={containerRef}>
       <button
         onClick={() => onOpenClose(!isOpen)}
         className={`flex items-center gap-2 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors w-full ${button}`.trim()}

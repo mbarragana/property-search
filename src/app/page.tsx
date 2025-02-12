@@ -77,6 +77,8 @@ export default function Home() {
           className="object-cover"
           sizes="100vw"
         />
+        {/* Overlay div with gradient */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black to-gray-500 to-transparent opacity-40" />
       </div>
 
       {/* Content */}
@@ -89,24 +91,25 @@ export default function Home() {
 
           <ToggleGroup onChange={setSearchType} value={searchType} />
 
-          {/* Search Section */}
-          <div className="flex flex-col gap-4 mt-6">
-            {/* Search Bar - Mobile: Stack vertically, Desktop: Single row */}
-            <div className="flex flex-col md:flex-row bg-white rounded-2xl md:rounded-full py-2 px-4 shadow-lg gap-2">
+          {/* Search Bar - Mobile: Stack vertically, Desktop: Single row */}
+          <div className="flex flex-col md:flex-row bg-white rounded-2xl md:rounded-full py-2 px-4 shadow-lg gap-2 mt-6 items-center">
+            <div className="w-full md:w-[40%]">
               <LocationSelector onSelect={setLocation} />
-
-              <div className="hidden md:block w-px h-10 bg-gray-200" />
+            </div>
+            <div className="hidden md:block w-px h-10 bg-gray-200 flex-none" />
+            <div className="w-full md:w-[25%]">
               <CategorySelector onSelect={setCategory} category={category} />
-
-              <div className="hidden md:block w-px h-10 bg-gray-200" />
+            </div>
+            <div className="hidden md:block w-px h-10 bg-gray-200 flex-none" />
+            <div className="w-full md:w-[25%]">
               <PriceRange
                 onChange={setPriceRange}
                 data={histogram}
                 isLoading={histogramIsLoading}
                 hasError={!!histogramError}
               />
-
-              {/* Search Button */}
+            </div>
+            <div className="flex flex-1 w-full justify-end">
               <button
                 onClick={handleSearchClick}
                 className="w-full md:w-auto bg-purple-600 text-white px-8 py-4 rounded-full font-medium hover:bg-purple-700 transition-colors"

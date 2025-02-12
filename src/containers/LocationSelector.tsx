@@ -35,7 +35,6 @@ const labelProps = {
 };
 
 const classes = {
-  container: "min-w-64 w-full",
   overlay: "flex flex-col md:flex-row",
 };
 
