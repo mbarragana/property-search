@@ -26,10 +26,6 @@ including the price histogram and count display. [Figma Link](https://www.figma.
   - Should be dynamically Updated based on the set filters (Api usage below)
 - The Rent/Buy buttons and all the filters should dynamically update the price histogram and the number of verified listings
 
-## Deliverable
-
-Deployed Demo web app (e.g. on vercel) or as shared github repo (please share with github user waquner)
-
 ● Bonus: Animations/transitions for dropdowns and sliders.
 
 # Technical Details
