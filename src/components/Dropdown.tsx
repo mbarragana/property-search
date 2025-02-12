@@ -1,11 +1,11 @@
 "use client";
 
-import { ComponentType, useEffect, useRef } from "react";
+import { ComponentType, ReactNode, useEffect, useRef } from "react";
 
 type BaseSelectorProps<T> = {
   label: {
     Icon: ComponentType;
-    formatLabel: (value: T) => string;
+    formatLabel: (value: T) => ReactNode;
     name: string;
   };
   value: T;
@@ -54,11 +54,11 @@ export function Dropdown<T>({
         disabled={disabled}
       >
         <label.Icon />
-        <div className="flex flex-col items-start text-left">
+        <div className="flex flex-col items-start text-left w-full">
           <span className="text-sm font-medium text-gray-900">
             {label.name}
           </span>
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-gray-500 w-full">
             {label.formatLabel(value)}
           </span>
         </div>

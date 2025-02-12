@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { ChangeEvent, useCallback, useMemo, useState } from "react";
 import { Magnifier, MapPin } from "../components/Icons";
 import { fetcher } from "@/utils";
 import useSWR from "swr";
 import Image from "next/image";
 import { Dropdown } from "@/components/Dropdown";
+import { AddressAutoComplete } from "@/components/AddressAutoComplete";
 
 function ItemMapPin() {
   return (
@@ -23,25 +24,44 @@ type LocationSelectorProps = {
   onSelect: (location: string) => void;
 };
 
-const labelProps = {
-  Icon: Magnifier,
-  name: "Location",
-  formatLabel: (place: City | District | null) => {
-    if (place) {
-      return parseDistrictName(place.name);
-    }
-    return "Search address, neighbourhood, city, or ZIP code";
-  },
-};
-
 const classes = {
   overlay: "flex flex-col md:flex-row",
 };
+
+function formatLabel(
+  address: string,
+  handleAddressChange: (e: ChangeEvent<HTMLInputElement>) => void
+) {
+  function innerFormat(place: City | District | null) {
+    if (place) {
+      return parseDistrictName(place.name);
+    }
+    return (
+      <AddressAutoComplete
+        onChange={handleAddressChange}
+        value={address}
+        placeholder="Search address, neighbourhood, city, or ZIP code"
+      />
+    );
+  }
+  return innerFormat;
+}
 
 export const LocationSelector = ({ onSelect }: LocationSelectorProps) => {
   const [selectedLocation, setSelectedLocation] = useState<City | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [place, setPlace] = useState<City | District | null>(null);
+  const [address, setAddress] = useState<string>("");
+
+  const handleAddressChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>): void => {
+      const text = e.target.value;
+      if (isOpen && text) setIsOpen(false);
+      if (!isOpen && !text) setIsOpen(true);
+      setAddress(text);
+    },
+    [setAddress, setIsOpen, isOpen]
+  );
 
   const recentSearchesState = useSWR(
     "/api/search/recent",
@@ -64,12 +84,29 @@ export const LocationSelector = ({ onSelect }: LocationSelectorProps) => {
     onSelect?.(district?.id || selectedLocation.id);
   };
 
+  const handleOpenClose = useCallback(
+    (value: boolean) => {
+      if (value && address) return;
+      setIsOpen(value);
+    },
+    [address]
+  );
+
+  const labelProps = useMemo(
+    () => ({
+      Icon: Magnifier,
+      name: "Location",
+      formatLabel: formatLabel(address, handleAddressChange),
+    }),
+    [address, handleAddressChange]
+  );
+
   return (
     <Dropdown
       label={labelProps}
       classes={classes}
       isOpen={isOpen}
-      onOpenClose={setIsOpen}
+      onOpenClose={handleOpenClose}
       value={place}
     >
       <>
